@@ -133,3 +133,8 @@ android/
 log.txt
 *.zip
 tc/
+
+#
+#Ignoring Android.bp link file
+#
+Android.bp
