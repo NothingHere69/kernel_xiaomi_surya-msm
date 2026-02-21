@@ -1,10 +1,10 @@
 #!/bin/bash
 #
-# Compile script for FSociety kernel
+# Compile script for Beast kernel
 # Copyright (C) 2020-2021 Adithya R.
 
 SECONDS=0
-ZIPNAME="FSociety-surya-$(date '+%Y%m%d-%H%M').zip"
+ZIPNAME="Beast-surya-$(date '+%Y%m%d-%H%M').zip"
 LLVM_REV="22"
 TC_DIR="$(pwd)/tc/clang-$LLVM_REV"
 AK3_DIR="$(pwd)/android/AnyKernel3"
@@ -19,7 +19,7 @@ export PATH="$TC_DIR/bin:$PATH"
 
 if ! [ -d "$TC_DIR" ]; then
 	echo "Slim LLVM not found! Cloning to $TC_DIR..."
-	if ! git clone --depth=1 -b $LLVM_REV https://bitbucket.org/rdxzv/clang-standalone.git "$TC_DIR"; then
+	if ! git clone --depth=1 -b $LLVM_REV https://bitbucket.org/nothinghere69/clang-standalone.git "$TC_DIR"; then
 		echo "Cloning failed! Aborting..."
 		exit 1
 	fi
@@ -27,7 +27,7 @@ fi
 
 if ! [ -d "$AK3_DIR" ]; then
 	echo "AnyKernel3 not found! Cloning to $AK3_DIR..."
-	if ! git clone --depth=1 -b FSociety https://github.com/rd-stuffs/AnyKernel3.git "$AK3_DIR"; then
+	if ! git clone --depth=1 -b Beast https://github.com/nothinghere69/AnyKernel3.git "$AK3_DIR"; then
 		echo "Cloning failed! Aborting..."
 		exit 1
 	fi
@@ -67,7 +67,7 @@ make $DEFCONFIG
 
 if [[ "$KSU" = true ]]; then
 	echo -e "\nBuilding with KernelSU support...\n"
-	ZIPNAME="${ZIPNAME/FSociety-surya/FSociety-KSU}"
+	ZIPNAME="${ZIPNAME/Beast-surya/Beast-KSU}"
 	scripts/config --file out/.config -e KSU -e KSU_MANUAL_HOOK
 	make olddefconfig
 fi
@@ -83,7 +83,7 @@ if [ -f "$kernel" ] && [ -f "$dtb" ] && [ -f "$dtbo" ]; then
 	cp -r $AK3_DIR AnyKernel3
 	cp $kernel $dtb $dtbo AnyKernel3
 	cd AnyKernel3
-	git checkout FSociety &> /dev/null
+	git checkout Beast &> /dev/null
 	zip -r9 "../$ZIPNAME" * -x .git modules\* patch\* ramdisk\* README.md *placeholder
 	cd ..
 	rm -rf AnyKernel3
