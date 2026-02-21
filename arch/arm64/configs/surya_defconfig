@@ -1899,7 +1899,9 @@ CONFIG_CNSS_GENL=y
 #
 # KernelSU
 #
-# CONFIG_KSU is not set
+CONFIG_KSU=y
+CONFIG_KSU_MANUAL_HOOK=y
+CONFIG_KSU_KPROBES_HOOK=n
 
 #
 # Input device support
