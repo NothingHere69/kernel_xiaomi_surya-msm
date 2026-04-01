@@ -7,7 +7,7 @@ set -euo pipefail
 
 trap 'printf "\nInterrupted.\n"; exit 1' INT
 
-ZIPNAME="FSociety-surya-$(date '+%Y%m%d-%H%M').zip"
+ZIPNAME="Beast-surya-$(date '+%Y%m%d-%H%M').zip"
 TC_DIR="$(pwd)/tc/clang-neutron"
 AK3_DIR="$(pwd)/AnyKernel3"
 DEFCONFIG="surya_defconfig"
@@ -27,8 +27,8 @@ fi
 
 if [ ! -d "$AK3_DIR" ]; then
 	printf "Cloning AnyKernel3 to %s...\n" "$AK3_DIR"
-	git clone --depth=1 -b FSociety \
-		https://github.com/rd-stuffs/AnyKernel3.git "$AK3_DIR"
+	git clone --depth=1 -b Beast \
+		https://github.com/NothingHere69/AnyKernel3 "$AK3_DIR"
 fi
 
 if [[ ${1:-} == -rf || ${1:-} == --regen-full ]]; then
@@ -39,7 +39,7 @@ if [[ ${1:-} == -rf || ${1:-} == --regen-full ]]; then
 fi
 
 CLEAN="false"
-KSU="false"
+KSU="true"
 
 for arg in "$@"; do
 	case $arg in
@@ -66,7 +66,7 @@ make "$DEFCONFIG" &>/dev/null
 
 if [[ $KSU == "true" ]]; then
 	printf "Building with KernelSU support...\n"
-	ZIPNAME="${ZIPNAME/FSociety-surya/FSociety-KSU}"
+	ZIPNAME="${ZIPNAME/Beast-surya/Beast-KSUN}"
 	scripts/config --file out/.config -e KSU -e KSU_ALLOWLIST_WORKAROUND
 	make olddefconfig &>/dev/null
 fi
